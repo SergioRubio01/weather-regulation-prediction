@@ -1,0 +1,78 @@
+# Quick test configuration with minimal hyperparameters
+name: quick_test
+description: Quick test configuration for development and debugging
+version: 1.0.0
+
+# Data configuration
+data:
+  airports: [EGLL]  # Single airport for quick testing
+  time_init: "2019-01-01 00:00:00"  # Shorter time range
+  time_end: "2019-03-31 23:59:00"
+  time_delta: 30
+  test_size: 0.3
+  validation_size: 0.0  # No validation set for quick tests
+  random_state: 42
+  download_type: 1
+  data_path: "./Data"
+  output_path: "./Output/quick_test"
+  use_minmax_scaler: true
+  use_label_binarizer: true
+  window_size: 1
+  use_oversampling: false
+  use_undersampling: false
+
+# Training configuration
+training:
+  use_cross_validation: false  # Disable for speed
+  use_early_stopping: true
+  early_stopping_patience: 5
+  use_lr_scheduler: false  # Disable for simplicity
+  save_best_model: true
+  tensorboard: false
+  wandb: false
+  mlflow: false
+  log_interval: 20
+  use_gpu: true
+  mixed_precision: false
+  num_workers: 2
+
+# Model configurations - only single values for quick testing
+models:
+  random_forest:
+    n_estimators: [50]
+    criterion: [gini]
+    max_depth: [7]
+    min_samples_split: [2]
+    min_samples_leaf: [1]
+    max_features: [auto]
+    bootstrap: true
+    n_jobs: -1
+    verbose: 1
+
+  lstm:
+    units: [50]
+    epochs: [10]
+    batch_size: [32]
+    dropout_rate: [0.2]
+    recurrent_dropout: [0.0]
+    activation: tanh
+    optimizer: adam
+    loss: binary_crossentropy
+    learning_rate: [0.001]
+    num_layers: [1]
+    bidirectional: false
+
+# Experiment settings
+experiment_settings:
+  models_to_train: [random_forest, lstm]
+  hyperparameter_tuning: false  # No tuning for quick test
+  tuning_method: grid
+  tuning_trials: 0
+
+# Output settings
+output_settings:
+  save_predictions: true
+  save_feature_importance: true
+  save_confusion_matrix: true
+  save_roc_curve: false
+  save_training_history: true

@@ -1,0 +1,92 @@
+# LSTM hyperparameter tuning configuration
+name: lstm_hyperparameter_tuning
+description: Extensive LSTM hyperparameter tuning for optimal performance
+version: 1.0.0
+
+# Data configuration
+data:
+  airports: [EGLL, LSZH]  # Focus on two main airports
+  time_init: "2017-01-01 00:50:00"
+  time_end: "2019-12-08 23:50:00"
+  time_delta: 30
+  test_size: 0.2
+  validation_size: 0.2
+  random_state: 42
+  download_type: 1
+  data_path: "./Data"
+  output_path: "./Output/lstm_tuning"
+  use_minmax_scaler: true
+  use_label_binarizer: true
+  window_size: 3  # Use temporal window for LSTM
+  use_oversampling: true  # Balance dataset
+  smote_ratio: 0.8
+
+# Training configuration
+training:
+  use_cross_validation: true
+  cv_folds: 3  # Reduced for faster tuning
+  stratified: true
+  use_early_stopping: true
+  early_stopping_patience: 15
+  early_stopping_monitor: val_loss
+  early_stopping_mode: min
+  use_lr_scheduler: true
+  lr_scheduler_type: reduce_on_plateau
+  lr_scheduler_patience: 7
+  lr_scheduler_factor: 0.5
+  save_best_model: true
+  checkpoint_monitor: val_accuracy
+  checkpoint_mode: max
+  tensorboard: true
+  log_interval: 10
+  use_gpu: true
+  mixed_precision: true  # Speed up training
+  num_workers: 4
+
+# Model configurations
+models:
+  lstm:
+    # Architecture search
+    units: [32, 64, 128, 256]
+    num_layers: [1, 2, 3, 4]
+    bidirectional: [false, true]
+    
+    # Regularization
+    dropout_rate: [0.1, 0.2, 0.3, 0.4, 0.5]
+    recurrent_dropout: [0.0, 0.1, 0.2, 0.3]
+    
+    # Training parameters
+    epochs: [50, 100, 150, 200]
+    batch_size: [16, 32, 64, 128]
+    learning_rate: [0.0001, 0.001, 0.01]
+    
+    # Optimization
+    optimizer: [adam, adamw, rmsprop]
+    loss: binary_crossentropy
+    
+    # Activation functions
+    activation: [tanh, relu]
+    recurrent_activation: sigmoid
+    
+    # Other parameters
+    use_bias: true
+    return_sequences: false
+    stateful: false
+    early_stopping_patience: 15
+    reduce_lr_patience: 7
+    reduce_lr_factor: 0.5
+
+# Experiment settings
+experiment_settings:
+  models_to_train: [lstm]
+  hyperparameter_tuning: true
+  tuning_method: bayesian  # Use Bayesian optimization for efficient search
+  tuning_trials: 200  # Number of trials for Bayesian optimization
+
+# Output settings
+output_settings:
+  save_predictions: true
+  save_feature_importance: false  # Not applicable for LSTM
+  save_confusion_matrix: true
+  save_roc_curve: true
+  save_training_history: true

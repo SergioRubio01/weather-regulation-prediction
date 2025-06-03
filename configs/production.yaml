@@ -1,0 +1,148 @@
+# Production configuration with best hyperparameters
+name: production_model
+description: Production-ready configuration with optimized hyperparameters
+version: 2.0.0
+
+# Data configuration
+data:
+  airports: [EGLL, LSZH, LFPG, LOWW]
+  time_init: "2017-01-01 00:50:00"
+  time_end: "2019-12-08 23:50:00"
+  time_delta: 30
+  test_size: 0.15
+  validation_size: 0.15
+  random_state: 42
+  download_type: 1
+  data_path: "./Data"
+  output_path: "./Output/production"
+  use_minmax_scaler: true
+  use_label_binarizer: true
+  window_size: 2
+  use_oversampling: true
+  use_undersampling: false
+  smote_ratio: 0.7
+
+# Training configuration
+training:
+  use_cross_validation: true
+  cv_folds: 5
+  stratified: true
+  use_early_stopping: true
+  early_stopping_patience: 20
+  early_stopping_monitor: val_loss
+  early_stopping_mode: min
+  use_lr_scheduler: true
+  lr_scheduler_type: cosine
+  lr_scheduler_patience: 10
+  lr_scheduler_factor: 0.5
+  save_best_model: true
+  checkpoint_monitor: val_accuracy
+  checkpoint_mode: max
+  tensorboard: true
+  wandb: true
+  mlflow: true
+  log_interval: 10
+  use_gpu: true
+  mixed_precision: true
+  num_workers: 8
+
+# Best model configurations (from hyperparameter tuning)
+models:
+  random_forest:
+    n_estimators: [200]
+    criterion: [entropy]
+    max_depth: [15]
+    min_samples_split: [5]
+    min_samples_leaf: [2]
+    max_features: [sqrt]
+    bootstrap: true
+    n_jobs: -1
+    verbose: 0
+
+  lstm:
+    units: [128]
+    epochs: [100]
+    batch_size: [64]
+    dropout_rate: [0.3]
+    recurrent_dropout: [0.1]
+    activation: tanh
+    recurrent_activation: sigmoid
+    use_bias: true
+    return_sequences: false
+    stateful: false
+    optimizer: adamw
+    loss: binary_crossentropy
+    learning_rate: [0.001]
+    num_layers: [3]
+    bidirectional: true
+    early_stopping_patience: 20
+    reduce_lr_patience: 10
+    reduce_lr_factor: 0.5
+
+  cnn:
+    filters: [64]
+    kernel_size: [5]
+    pool_size: [2]
+    dropout_rate: [0.3]
+    activation: relu
+    padding: same
+    epochs: [100]
+    batch_size: [64]
+    optimizer: adam
+    loss: binary_crossentropy
+    learning_rate: [0.001]
+    num_conv_layers: [2]
+    use_batch_norm: true
+    dense_units: [128]
+
+  gru:
+    units: [100]
+    epochs: [100]
+    batch_size: [64]
+    dropout_rate: [0.3]
+    recurrent_dropout: [0.1]
+    activation: tanh
+    recurrent_activation: sigmoid
+    optimizer: adam
+    loss: binary_crossentropy
+    learning_rate: [0.001]
+    num_layers: [2]
+    bidirectional: true
+
+  transformer:
+    d_model: [128]
+    num_heads: [8]
+    num_layers: [4]
+    d_ff: [256]
+    dropout_rate: [0.2]
+    attention_dropout: [0.1]
+    epochs: [150]
+    batch_size: [32]
+    optimizer: adam
+    loss: binary_crossentropy
+    learning_rate: [0.0001]
+    warmup_steps: 4000
+    use_positional_encoding: true
+
+  ensemble:
+    base_models: [random_forest, lstm, gru, cnn]
+    voting_type: soft
+    weights: [0.25, 0.35, 0.25, 0.15]  # Weights based on individual model performance
+    use_stacking: true
+    meta_learner: gradient_boosting
+    cv_folds: 5
+
+# Experiment settings
+experiment_settings:
+  models_to_train: [random_forest, lstm, gru, cnn, transformer, ensemble]
+  hyperparameter_tuning: false  # Already tuned
+  tuning_method: none
+  tuning_trials: 0
+
+# Output settings
+output_settings:
+  save_predictions: true
+  save_feature_importance: true
+  save_confusion_matrix: true
+  save_roc_curve: true
+  save_training_history: true

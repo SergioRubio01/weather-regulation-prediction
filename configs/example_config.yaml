@@ -1,0 +1,161 @@
+data:
+  airports:
+  - EGLL
+  - LSZH
+  - LFPG
+  - LOWW
+  data_path: ./Data
+  download_type: 1
+  output_path: ./Output
+  random_state: 42
+  smote_ratio: 1.0
+  test_size: 0.2
+  time_delta: 30
+  time_end: 2019-12-08 23:50:00
+  time_init: 2017-01-01 00:50:00
+  use_label_binarizer: true
+  use_minmax_scaler: true
+  use_oversampling: false
+  use_undersampling: false
+  validation_size: 0.2
+  window_size: 1
+description: Testing new configuration system
+experiment_settings:
+  hyperparameter_tuning: true
+  models_to_train:
+  - random_forest
+  - lstm
+  - transformer
+  tuning_method: grid
+  tuning_trials: 100
+models:
+  lstm:
+    activation: tanh
+    batch_size:
+    - 32
+    - 64
+    - 128
+    bidirectional: false
+    dropout_rate:
+    - 0.2
+    - 0.3
+    - 0.5
+    early_stopping_patience: 10
+    epochs:
+    - 30
+    - 60
+    - 120
+    learning_rate:
+    - 0.001
+    - 0.01
+    - 0.1
+    loss: binary_crossentropy
+    num_layers:
+    - 1
+    - 2
+    - 3
+    optimizer: adam
+    recurrent_activation: sigmoid
+    recurrent_dropout:
+    - 0.0
+    - 0.2
+    reduce_lr_factor: 0.5
+    reduce_lr_patience: 5
+    return_sequences: false
+    stateful: false
+    units:
+    - 50
+    - 100
+    - 200
+    use_bias: true
+  random_forest:
+    bootstrap: true
+    criterion:
+    - gini
+    - entropy
+    - log_loss
+    max_depth:
+    - 5
+    - 7
+    - 10
+    - 15
+    max_features:
+    - auto
+    - sqrt
+    - 0.5
+    min_samples_leaf:
+    - 1
+    - 2
+    - 4
+    min_samples_split:
+    - 2
+    - 5
+    - 10
+    n_estimators:
+    - 50
+    - 100
+    - 200
+    n_jobs: -1
+    verbose: 0
+  transformer:
+    attention_dropout:
+    - 0.1
+    - 0.2
+    batch_size:
+    - 16
+    - 32
+    - 64
+    d_ff:
+    - 128
+    - 256
+    - 512
+    d_model:
+    - 64
+    - 128
+    - 256
+    dropout_rate:
+    - 0.1
+    - 0.2
+    - 0.3
+    epochs:
+    - 50
+    - 100
+    - 200
+    learning_rate:
+    - 0.0001
+    - 0.001
+    loss: binary_crossentropy
+    num_heads:
+    - 4
+    - 8
+    num_layers:
+    - 2
+    - 4
+    - 6
+    optimizer: adam
+    use_positional_encoding: true
+    warmup_steps: 4000
+name: weather_prediction_experiment_v1
+training:
+  checkpoint_mode: max
+  checkpoint_monitor: val_accuracy
+  cv_folds: 5
+  early_stopping_mode: min
+  early_stopping_monitor: val_loss
+  early_stopping_patience: 10
+  log_interval: 10
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 5
+  lr_scheduler_type: reduce_on_plateau
+  mixed_precision: false
+  mlflow: false
+  num_workers: 4
+  save_best_model: true
+  stratified: true
+  tensorboard: true
+  use_cross_validation: true
+  use_early_stopping: true
+  use_gpu: true
+  use_lr_scheduler: true
+  wandb: false
+version: 1.0.0
