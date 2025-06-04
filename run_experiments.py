@@ -30,12 +30,13 @@ import yaml
 from jinja2 import Template
 from tqdm import tqdm
 
-# Import our modules
-from config import ExperimentConfig, ModelType
-from config_parser import ConfigParser
-from config_utils import ConfigurationManager
 from models import TF_MODELS_AVAILABLE
 from models.random_forest import RandomForestModel
+
+# Import our modules
+from src.config import ExperimentConfig, ModelType
+from src.config_parser import ConfigParser
+from src.config_utils import ConfigurationManager
 
 # Try to import ensemble separately as it has conditional TF imports
 try:
@@ -55,7 +56,9 @@ if TF_MODELS_AVAILABLE:
     from models.transformer import TransformerModel
     from models.wavenet import WaveNetModel
 else:
-    warnings.warn("TensorFlow not available. Only RandomForest model will be available.")
+    warnings.warn(
+        "TensorFlow not available. Only RandomForest model will be available.", stacklevel=2
+    )
     # Set all TF models to None
     AttentionLSTMModel = None
     AutoencoderModel = None
@@ -273,7 +276,7 @@ class ExperimentRunner:
                 model.train(X_train, y_train, X_test, y_test)
             else:
                 # Standard sklearn-style training
-                training_history = trainer.train(
+                trainer.train(
                     model=model.model if hasattr(model, "model") else model,
                     X_train=X_train,
                     y_train=y_train,
@@ -415,7 +418,7 @@ class ExperimentRunner:
                         )
         else:
             # Sequential execution
-            for name, config in tqdm(suite.experiments, desc="Running experiments"):
+            for _, config in tqdm(suite.experiments, desc="Running experiments"):
                 result = self.run_single_experiment(
                     config,
                     X_train,

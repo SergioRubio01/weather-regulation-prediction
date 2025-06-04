@@ -215,7 +215,7 @@ class ModelComparisonDashboard:
 
         # Summary cards
         cards = []
-        for exp_id, data in exp_data.items():
+        for _, data in exp_data.items():
             card = dbc.Card(
                 [
                     dbc.CardHeader(html.H5(data["name"])),
@@ -304,7 +304,7 @@ class ModelComparisonDashboard:
                 )
 
         fig_radar = go.Figure()
-        for i, data in enumerate(radar_data):
+        for data in radar_data:
             fig_radar.add_trace(
                 go.Scatterpolar(
                     r=data["values"], theta=data["metrics"], fill="toself", name=data["model"]

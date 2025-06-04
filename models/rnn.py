@@ -14,7 +14,7 @@ from keras.layers import Dense, Dropout, SimpleRNN
 from keras.models import Sequential, load_model
 from keras.optimizers import Adam
 
-from config import ExperimentConfig
+from src.config import ExperimentConfig
 
 from .base_model import BaseModel
 

@@ -296,7 +296,7 @@ hyperparameter_tuning:
 
 ### Input Data Structure
 
-```
+```bash
 ./Data/
 ├── METAR/                    # Weather observations
 │   ├── METAR_EGLL_filtered.csv
@@ -310,7 +310,7 @@ hyperparameter_tuning:
 
 ### Output Structure
 
-```
+```bash
 ./Output/
 ├── results/                  # Structured experiment results
 ├── visualizations/           # Generated plots and charts

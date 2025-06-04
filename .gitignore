@@ -197,3 +197,7 @@ data/METAR/*
 data/TAF/*
 data/Regulations/*
 data_cache/*
+
+# Large data files
+data/prepared_weather_data.csv
+models/weather_regulation_model.pkl

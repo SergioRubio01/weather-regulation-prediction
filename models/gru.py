@@ -16,7 +16,7 @@ from keras.models import Sequential, load_model
 from keras.optimizers import Adam
 from tensorflow import keras
 
-from config import ExperimentConfig, GRUConfig
+from src.config import ExperimentConfig, GRUConfig
 
 from .base_model import BaseModel
 

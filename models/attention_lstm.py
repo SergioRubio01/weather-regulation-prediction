@@ -27,7 +27,7 @@ from keras.models import Model, load_model
 from keras.optimizers import Adam
 from tensorflow import keras
 
-from config import ExperimentConfig
+from src.config import ExperimentConfig
 
 from .base_model import BaseModel
 

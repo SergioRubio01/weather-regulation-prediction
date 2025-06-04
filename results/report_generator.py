@@ -29,11 +29,10 @@ warnings.filterwarnings("ignore")
 # Optional imports for PDF and PowerPoint generation
 try:
     from reportlab.lib import colors
-    from reportlab.lib.pagesizes import A4, letter
+    from reportlab.lib.pagesizes import letter
     from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
     from reportlab.lib.units import inch
     from reportlab.platypus import (
-        Image,
         PageBreak,
         Paragraph,
         SimpleDocTemplate,

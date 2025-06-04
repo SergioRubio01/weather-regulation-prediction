@@ -25,7 +25,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import cross_val_score, train_test_split
 
-from config import ExperimentConfig
+from src.config import ExperimentConfig
 
 
 class ModelMetrics:

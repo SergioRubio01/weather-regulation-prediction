@@ -12,7 +12,7 @@ import numpy as np
 from sklearn.ensemble import GradientBoostingClassifier, StackingClassifier, VotingClassifier
 from sklearn.linear_model import LogisticRegression
 
-from config import EnsembleConfig, ExperimentConfig
+from src.config import EnsembleConfig, ExperimentConfig
 
 from .base_model import BaseModel
 from .random_forest import RandomForestModel
@@ -406,7 +406,7 @@ class EnsembleModel(BaseModel):
         # Get base model predictions
         base_predictions = []
 
-        for model_name, model in self.base_models.items():
+        for _, model in self.base_models.items():
             if hasattr(model, "predict_proba"):
                 preds = model.predict_proba(X)[:, 1]
             else:

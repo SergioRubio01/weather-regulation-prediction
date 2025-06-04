@@ -663,7 +663,7 @@ class TestMemoryUsageTests:
             model = RandomForestModel(config)
             trainer = Trainer()
 
-            result = trainer.train_model(
+            trainer.train_model(
                 model=model,
                 X_train=X[:800],
                 y_train=y[:800],

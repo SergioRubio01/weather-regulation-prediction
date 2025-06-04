@@ -35,8 +35,8 @@ from tensorflow.keras.callbacks import (
 )
 from tqdm import tqdm
 
-from config import ExperimentConfig
-from config_parser import ConfigParser
+from src.config import ExperimentConfig
+from src.config_parser import ConfigParser
 
 
 class TrainingCallback(ABC):
@@ -196,7 +196,7 @@ class Trainer:
 
         # Start experiment tracking
         if self.experiment_tracker:
-            run_id = self.experiment_tracker.start_run(
+            self.experiment_tracker.start_run(
                 run_name=f"{self.config.experiment_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             )
             self.experiment_tracker.log_params(self._get_config_params())
@@ -287,7 +287,6 @@ class Trainer:
             X_train_shuffled = X_train[indices]
             y_train_shuffled = y_train[indices]
 
-            epoch_loss = 0
             epoch_acc = 0
 
             # Mini-batch training

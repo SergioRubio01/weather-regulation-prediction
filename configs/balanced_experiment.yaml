@@ -1,0 +1,129 @@
+name: balanced_weather_regulation_experiment
+description: Balanced dataset experiment with multiple airports and ~50% regulation rate
+
+# Data configuration
+data:
+  # Airports will be automatically selected based on regulation frequency
+  auto_select_airports: true
+  max_airports: 5  # Maximum number of airports to combine
+  min_regulations_per_airport: 20  # Minimum active regulations to include an airport
+
+  # Date range for analysis
+  time_init: "2017-01-01 00:00:00"
+  time_end: "2019-12-31 23:59:00"
+  time_delta: 30  # Time step in minutes
+
+  # Balancing strategy
+  target_balance_ratio: 0.5  # Aim for 50% positive samples
+  sampling_strategy: "time_window"  # Focus on windows around regulations
+  time_window_before_hours: 6  # Hours before regulation to include
+  time_window_after_hours: 2   # Hours after regulation to include
+
+  # Data paths
+  data_path: "./data"
+  output_path: "./output/balanced_experiment"
+
+  # Data quality filters
+  min_regulation_duration_min: 30  # Filter out very short regulations
+  include_cancelled_regulations: false  # Only use active regulations
+
+  # Features
+  feature_engineering:
+    create_severe_weather_indicators: true
+    create_time_based_features: true
+    create_interaction_features: true
+    create_multi_airport_features: true
+
+# Training configuration
+training:
+  test_size: 0.15
+  validation_size: 0.15
+  random_state: 42
+
+  # Cross-validation
+  use_cross_validation: true
+  cv_folds: 5
+  cv_strategy: "stratified"  # Important for balanced data
+
+  # Early stopping for neural networks
+  use_early_stopping: true
+  early_stopping_patience: 20
+
+  # Model selection
+  train_multiple_models: true
+  model_selection_metric: "f1"  # Use F1 score for model selection
+
+# Model configurations
+models:
+  random_forest:
+    n_estimators: 300
+    max_depth: 20
+    min_samples_split: 5
+    min_samples_leaf: 2
+    max_features: "sqrt"
+
+  gradient_boosting:
+    n_estimators: 200
+    learning_rate: 0.1
+    max_depth: 5
+    subsample: 0.8
+
+  neural_network:
+    hidden_layer_sizes: [100, 50]
+    activation: "relu"
+    solver: "adam"
+    alpha: 0.001
+    batch_size: 32
+    max_iter: 500
+
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+
+# Hyperparameter tuning
+hyperparameter_tuning:
+  enabled: true
+  method: "bayesian"
+  n_trials: 50
+
+  # Tuning specific to balanced data
+  optimize_threshold: true  # Find optimal classification threshold
+  threshold_range: [0.1, 0.9]
+  threshold_step: 0.05
+
+# Experiment settings
+experiment_settings:
+  models_to_train: [random_forest, gradient_boosting, neural_network, logistic_regression]
+
+  # Ensemble configuration
+  create_ensemble: true
+  ensemble_method: "voting"
+  ensemble_voting: "soft"
+
+  # Performance evaluation
+  evaluation_metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+    - auc_roc
+    - confusion_matrix
+
+  # Visualization
+  create_plots: true
+  plot_types:
+    - roc_curves
+    - precision_recall_curves
+    - confusion_matrices
+    - feature_importance
+    - model_comparison
+
+  # Reporting
+  generate_report: true
+  report_formats: ["html", "pdf"]
+
+# Expected improvements over unbalanced approach
+expected_improvements:
+  f1_score: ">0.5"  # Target F1 score above 0.5
+  recall: ">0.6"    # Detect at least 60% of regulations
+  precision: ">0.4" # At least 40% of positive predictions should be correct

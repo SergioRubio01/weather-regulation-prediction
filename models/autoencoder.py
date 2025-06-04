@@ -16,7 +16,7 @@ from keras.models import Model, load_model
 from keras.optimizers import Adam
 from keras.regularizers import l1_l2
 
-from config import AutoencoderConfig, ExperimentConfig
+from src.config import AutoencoderConfig, ExperimentConfig
 
 from .base_model import BaseModel
 

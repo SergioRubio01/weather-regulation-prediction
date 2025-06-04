@@ -25,7 +25,7 @@ from keras.models import Sequential, load_model
 from keras.optimizers import Adam
 from tensorflow import keras
 
-from config import CNNConfig, ExperimentConfig
+from src.config import CNNConfig, ExperimentConfig
 
 from .base_model import BaseModel
 

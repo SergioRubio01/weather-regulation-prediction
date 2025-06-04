@@ -1,0 +1,17 @@
+{
+  "selected_airports": [
+    "EGLL"
+  ],
+  "use_multi_airport": false,
+  "target_balance_ratio": 0.5,
+  "sampling_strategy": "time_window",
+  "time_window_before_hours": 6,
+  "time_window_after_hours": 2,
+  "include_weather_reasons_only": false,
+  "min_regulation_duration_min": 30,
+  "regulation_stats": {
+    "total_active_regulations": 89,
+    "avg_duration_hours": 4.476404494382023,
+    "weather_related_pct": 62.92134831460674
+  }
+}

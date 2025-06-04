@@ -345,8 +345,8 @@ class TestDataValidator:
         )
 
         assert "temperature" in drift_report
-        assert drift_report["temperature"]["has_drift"] == True  # Should detect temperature drift
-        assert drift_report["pressure"]["has_drift"] == False  # No pressure drift
+        assert drift_report["temperature"]["has_drift"] is True  # Should detect temperature drift
+        assert drift_report["pressure"]["has_drift"] is False  # No pressure drift
 
     def test_weather_specific_validation(self, sample_weather_data):
         """Test weather-specific validation rules"""

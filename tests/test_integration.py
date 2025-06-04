@@ -18,6 +18,7 @@ from unittest.mock import Mock, patch
 import numpy as np
 import pandas as pd
 import pytest
+from model import Dly_Classifier
 
 # Import all major components
 from config import DataConfig, ExperimentConfig, TrainingConfig
@@ -26,7 +27,6 @@ from data.data_loader import DataLoader
 from data.data_validation import DataValidator
 from data.feature_engineering import WeatherFeatureEngineer
 from data.preprocessing import PreprocessingPipeline
-from model import Dly_Classifier
 from models.lstm import LSTMModel
 from models.random_forest import RandomForestModel
 from results.results_manager import ExperimentResult, ResultsManager
@@ -380,7 +380,7 @@ class TestConfigurationIntegration:
 
         # Should catch validation errors
         with pytest.raises((ValueError, TypeError)):
-            config = parser.parse_dict(invalid_config_data)
+            parser.parse_dict(invalid_config_data)
 
     def test_config_merging_integration(self):
         """Test configuration merging functionality"""
@@ -454,7 +454,7 @@ class TestDataFlowIntegration:
             # Load data
             loader = DataLoader(data_path=tmp_dir)
             loaded_weather = loader.load_metar_data(str(weather_path))
-            loaded_regulation = loader.load_regulation_data(str(regulation_path))
+            loader.load_regulation_data(str(regulation_path))
 
             # Validate data
             validator = DataValidator()
@@ -613,7 +613,7 @@ class TestLegacyCompatibility:
             try:
                 classifier.use_new_pipeline = True
                 # This would normally load real data, so we just test initialization
-                assert classifier.use_new_pipeline == True
+                assert classifier.use_new_pipeline is True
             except Exception:
                 # Expected if data files don't exist
                 pass
@@ -694,7 +694,7 @@ class TestCrossModuleCompatibility:
 
         # Create comparison data
         comparison_data = []
-        for exp_id, exp in experiments.items():
+        for _, exp in experiments.items():
             if exp.comparison_metrics is not None:
                 df = exp.comparison_metrics.copy()
                 df["experiment"] = exp.experiment_name
@@ -807,7 +807,7 @@ class TestPerformanceIntegration:
             config = RandomForestConfig(n_estimators=10, random_state=42 + i)
             model = RandomForestModel(config)
 
-            result = trainer.train_model(
+            trainer.train_model(
                 model=model,
                 X_train=X[:800],
                 y_train=y[:800],

@@ -36,7 +36,7 @@ except ImportError:
         "Weather parsing libraries not available. Install pytaf and metar-taf-parser.", stacklevel=2
     )
 
-from config import DataConfig, ExperimentConfig
+from src.config import DataConfig, ExperimentConfig
 
 
 @dataclass

@@ -16,7 +16,7 @@ from keras.models import Sequential, load_model
 from keras.optimizers import SGD, Adam, Nadam, RMSprop
 from tensorflow import keras
 
-from config import ExperimentConfig, LSTMConfig
+from src.config import ExperimentConfig, LSTMConfig
 
 from .base_model import BaseModel
 

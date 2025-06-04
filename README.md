@@ -21,6 +21,7 @@ A comprehensive machine learning system for predicting Air Traffic Flow Manageme
 - [Results and Visualization](#results-and-visualization)
 - [Performance](#performance)
 - [Testing](#testing)
+- [Balanced Dataset Approach](#balanced-dataset-approach)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -134,7 +135,7 @@ pip install plotly dash
 ### 1. Basic Model Training
 
 ```python
-from config import ExperimentConfig, RandomForestConfig
+from src.config import ExperimentConfig, RandomForestConfig
 from run_experiments import ExperimentRunner
 
 # Create configuration
@@ -160,7 +161,7 @@ print(f"Accuracy: {results['random_forest']['accuracy']:.3f}")
 ```python
 from training.hyperparameter_tuning import GridSearchTuner
 from models.random_forest import RandomForestModel
-from config import RandomForestConfig
+from src.config import RandomForestConfig
 
 # Create model
 config = RandomForestConfig(random_state=42)
@@ -215,7 +216,7 @@ models:
 ```
 
 ```python
-from config_parser import ConfigParser
+from src.config_parser import ConfigParser
 from run_experiments import ExperimentRunner
 
 # Load configuration
@@ -231,9 +232,9 @@ results = runner.run_all_experiments()
 
 The system follows a modular architecture with clear separation of concerns:
 
-```
+```bash
 weather-regulation-prediction/
-├── config/                     # Configuration management
+├── src/                       # Core source modules
 │   ├── config.py              # Configuration classes
 │   ├── config_parser.py       # YAML/JSON parsing
 │   └── config_utils.py        # CLI utilities
@@ -257,9 +258,26 @@ weather-regulation-prediction/
 ├── visualization/             # Visualization tools
 │   ├── plots.py               # Plotting utilities
 │   └── dashboard.py           # Interactive dashboards
+├── scripts/                   # Executable scripts
+│   ├── balanced_dataset/      # Balanced dataset pipeline
+│   ├── utilities/             # General utilities
+│   ├── legacy/                # Legacy compatibility
+│   └── examples/              # Usage examples
 ├── tests/                     # Comprehensive test suite
 └── configs/                   # Example configurations
 ```
+
+For details on the script organization, see [scripts/README.md](scripts/README.md).
+
+### Documentation
+
+- **[CLAUDE.md](CLAUDE.md)**: Comprehensive guidance for Claude Code when working with this system
+- **[BALANCED_DATASET_PROCEDURE.md](BALANCED_DATASET_PROCEDURE.md)**: Detailed documentation on the balanced dataset approach
+- **[REFACTORING_PLAN.md](REFACTORING_PLAN.md)**: System refactoring plan and progress
+- **[docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)**: Complete API reference for all modules
+- **[docs/PRECOMMIT_SETUP.md](docs/PRECOMMIT_SETUP.md)**: Pre-commit hooks configuration guide
+- **[scripts/README.md](scripts/README.md)**: Guide to script organization and usage
+- **[REORGANIZATION_SUMMARY.md](REORGANIZATION_SUMMARY.md)**: Summary of recent project reorganization
 
 ## Usage Guide
 
@@ -320,7 +338,7 @@ enhanced_data = engineer.create_features(metar_data)
 
 ```python
 from models.lstm import LSTMModel
-from config import LSTMConfig
+from src.config import LSTMConfig
 from training.trainer import Trainer
 
 # Configure model
@@ -350,7 +368,7 @@ result = trainer.train_model(
 
 ```python
 from models.ensemble import EnsembleModel
-from config import EnsembleConfig
+from src.config import EnsembleConfig
 
 config = EnsembleConfig(
     base_models=[
@@ -564,7 +582,7 @@ experiment_tracking:
 ### Configuration Management
 
 ```python
-from config_parser import ConfigParser
+from src.config_parser import ConfigParser
 
 parser = ConfigParser()
 
@@ -949,7 +967,7 @@ print(f"Peak memory: {metrics['peak_memory']:.2f}MB")
 
 The project includes a comprehensive test suite:
 
-```
+```bash
 tests/
 ├── test_config.py          # Configuration system tests
 ├── test_models.py          # Model implementation tests  
@@ -982,6 +1000,40 @@ pytest tests/ --cov=. --cov-report=html
 - **Integration Tests**: End-to-end workflow testing
 - **Performance Tests**: Speed and memory benchmarks
 - **Compatibility Tests**: Legacy system compatibility
+
+## Balanced Dataset Approach
+
+For handling severe class imbalance in weather regulation prediction (often < 2% positive samples), we've developed a comprehensive balanced dataset approach that achieves dramatic improvements in model performance.
+
+### Key Features
+
+- **Intelligent Sampling**: Time-window based sampling around regulation events
+- **Perfect Balance**: Achieves 50/50 class distribution
+- **Multi-Airport Analysis**: Automatically selects airports with sufficient regulation data
+- **Enhanced Features**: Weather severity indicators and variable wind handling
+
+### Results
+
+Using the balanced dataset approach on EGLL airport data:
+
+- **Class Balance**: From 1.1% to 50% positive samples
+- **F1 Score**: From 0.071 to 0.879 (1140% improvement)
+- **Recall**: From 17% to 100%
+- **AUC**: From 0.757 to 0.954
+
+### Usage
+
+```bash
+# Run the complete balanced dataset pipeline
+python scripts/balanced_dataset/run_balanced_pipeline.py
+
+# Or run individual steps
+python scripts/balanced_dataset/analyze_and_balance_data.py
+python scripts/balanced_dataset/prepare_balanced_data.py
+python scripts/balanced_dataset/train_balanced_model.py
+```
+
+For detailed documentation on the balanced dataset approach, including methodology, implementation details, and full results, see [BALANCED_DATASET_PROCEDURE.md](BALANCED_DATASET_PROCEDURE.md).
 
 ## Contributing
 
@@ -1019,7 +1071,7 @@ Example:
 
 ```python
 from models.base_model import BaseModel
-from config import BaseModelConfig
+from src.config import BaseModelConfig
 
 class NewModelConfig(BaseModelConfig):
     param1: int = 10

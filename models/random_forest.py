@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
-from config import ExperimentConfig, RandomForestConfig
+from src.config import ExperimentConfig, RandomForestConfig
 
 from .base_model import BaseModel
 

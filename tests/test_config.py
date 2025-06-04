@@ -12,7 +12,7 @@ from pathlib import Path
 
 import yaml
 
-from config import (
+from src.config import (
     CNNConfig,
     DataConfig,
     ExperimentConfig,
@@ -22,8 +22,8 @@ from config import (
     create_default_config,
     validate_config,
 )
-from config_parser import ConfigParser, load_config, merge_configs, save_config
-from config_utils import ConfigurationManager
+from src.config_parser import ConfigParser, load_config, merge_configs, save_config
+from src.config_utils import ConfigurationManager
 
 
 class TestConfigClasses(unittest.TestCase):

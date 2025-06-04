@@ -12,7 +12,7 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 
-from config import ExperimentConfig
+from src.config import ExperimentConfig
 
 from .base_model import BaseModel
 

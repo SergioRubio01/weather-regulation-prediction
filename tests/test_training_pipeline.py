@@ -682,7 +682,7 @@ class TestErrorHandling:
         """Test experiment configuration validation"""
         # Test invalid configuration
         with pytest.raises((ValueError, TypeError)):
-            invalid_config = ExperimentConfig(
+            ExperimentConfig(
                 name="",
                 models={},  # Empty name should be invalid  # No models defined
             )

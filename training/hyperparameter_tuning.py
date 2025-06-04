@@ -30,7 +30,7 @@ from ray import tune
 from ray.tune.schedulers import HyperBandScheduler, PopulationBasedTraining
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, cross_val_score
 
-from config_parser import ConfigParser
+from src.config_parser import ConfigParser
 
 
 @dataclass

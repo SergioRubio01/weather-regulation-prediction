@@ -293,12 +293,14 @@ class ModelVisualizer:
     def plot_training_history(
         self,
         histories: dict[str, dict[str, list[float]]],
-        metrics: list[str] = ["loss", "accuracy"],
+        metrics: list[str] | None = None,
         title: str = "Training History",
         interactive: bool = True,
         save_name: str | None = None,
     ) -> go.Figure | plt.Figure:
         """Plot training history for multiple models"""
+        if metrics is None:
+            metrics = ["loss", "accuracy"]
 
         if interactive:
             fig = make_subplots(
@@ -416,12 +418,14 @@ class ModelVisualizer:
     def plot_model_comparison(
         self,
         comparison_df: pd.DataFrame,
-        metrics: list[str] = ["accuracy", "precision", "recall", "f1_score"],
+        metrics: list[str] | None = None,
         title: str = "Model Performance Comparison",
         interactive: bool = True,
         save_name: str | None = None,
     ) -> go.Figure | plt.Figure:
         """Plot model comparison radar chart or bar chart"""
+        if metrics is None:
+            metrics = ["accuracy", "precision", "recall", "f1_score"]
 
         if interactive:
             # Radar chart for interactive
@@ -762,11 +766,13 @@ class WeatherVisualizer:
     def plot_weather_patterns(
         self,
         weather_data: pd.DataFrame,
-        features: list[str] = ["temperature", "pressure", "wind_speed"],
+        features: list[str] | None = None,
         title: str = "Weather Patterns",
         save_name: str | None = None,
     ) -> go.Figure:
         """Plot weather patterns over time"""
+        if features is None:
+            features = ["temperature", "pressure", "wind_speed"]
 
         fig = make_subplots(
             rows=len(features),
@@ -909,7 +915,7 @@ class WeatherVisualizer:
 
         fig = go.Figure()
 
-        for i, (airport, data) in enumerate(airport_data.items()):
+        for _, (airport, data) in enumerate(airport_data.items()):
             if metric in data.columns:
                 fig.add_trace(
                     go.Scatter(

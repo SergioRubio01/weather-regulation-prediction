@@ -25,7 +25,7 @@ from keras.layers import (
 from keras.models import Model, Sequential, load_model
 from keras.optimizers import Adam
 
-from config import ExperimentConfig
+from src.config import ExperimentConfig
 
 from .base_model import BaseModel
 
