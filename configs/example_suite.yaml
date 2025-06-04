@@ -1,0 +1,55 @@
+# Example Experiment Suite Configuration
+# This file demonstrates the expected format for run_experiments.py --suite
+
+name: "weather_prediction_suite"
+experiments:
+  # Experiment 1: Using an existing config file
+  - name: "quick_test_rf"
+    config_file: "configs/quick_test.yaml"
+
+  # Experiment 2: Using an existing config file
+  - name: "lstm_tuned"
+    config_file: "configs/lstm_tuning.yaml"
+
+  # Experiment 3: Inline configuration
+  - name: "transformer_experiment"
+    config:
+      experiment_name: "transformer_weather"
+      model_type: "transformer"
+      data:
+        airports: ["EGLL", "LSZH"]
+        start_date: "2023-01-01"
+        end_date: "2023-06-30"
+        train_test_split: 0.8
+      transformer:
+        d_model: 128
+        num_heads: 8
+        num_layers: 4
+        dropout: 0.1
+        epochs: 50
+      hyperparameter_tuning:
+        enabled: false
+
+  # Experiment 4: Another inline configuration
+  - name: "random_forest_baseline"
+    config:
+      experiment_name: "rf_baseline"
+      model_type: "random_forest"
+      data:
+        airports: ["EGLL"]
+        start_date: "2023-01-01"
+        end_date: "2023-03-31"
+      random_forest:
+        n_estimators: 100
+        max_depth: 10
+        min_samples_split: 5
+      hyperparameter_tuning:
+        enabled: false
+
+# Suite-level configuration
+output_dir: "./experiment_results/suite_runs"
+parallel: true                    # Run experiments in parallel
+max_workers: 2                    # Use 2 parallel workers
+tune_hyperparameters: true        # Enable hyperparameter tuning
+tuning_method: "bayesian"         # Use Bayesian optimization
+tuning_trials: 30                 # Run 30 tuning trials per experiment

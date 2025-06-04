@@ -1,19 +1,4 @@
-from functions import graphs_weather
-import os
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from functions import Reg_binarizer_undersampling
-from collections import Counter
-from functions import Reg_binarizer_oversampling
-from sklearn.model_selection import train_test_split as separar
-from yellowbrick.model_selection import FeatureImportances
-from sklearn.ensemble import RandomForestClassifier
-from yellowbrick.model_selection import ValidationCurve
-from yellowbrick.features import PCA
 from PIL import Image
-
-
 
 # # Lee el archivo CSV
 # AD = 'LFPG'
@@ -39,8 +24,6 @@ from PIL import Image
 # output_file = f'.\Data\Regulations\Regulation_binarizer_{len(ADlist)}_30.csv'
 
 # Reg_binarizer_undersampling(file_paths, ADs=ADlist ,output_file=output_file)
-
-
 
 
 # NAME = 'LFPG'
@@ -130,7 +113,7 @@ from PIL import Image
 # for i in range(len(n_estimators)):
 #     visualizer = FeatureImportances(RandomForestClassifier(n_estimators=n_estimators[i],max_depth=max_depth),
 #                                 relative=True)
-    
+
 #     visualizer.fit(X, Y)
 
 #     # Saving plot in PNG format
@@ -156,8 +139,7 @@ epochs = [30, 60, 120]
 image_paths = []
 for i in range(len(units)):
     for j in range(len(epochs)):
-        image_paths.append(
-            f'.\Output\LSTM\LSTM_LSZH_CM_{epochs[j]}E_32B_{units[i]}U.png')
+        image_paths.append(rf".\Output\LSTM\LSTM_LSZH_CM_{epochs[j]}E_32B_{units[i]}U.png")
 # Abre las imágenes y las almacena en una lista
 images = [Image.open(path) for path in image_paths]
 
@@ -177,7 +159,7 @@ for i in range(3):
         combined_image.paste(images[index], (j * width, i * height))
 
 # Guarda la imagen combinada
-combined_image.save(f".\Output\LSTM\LSTM_LSZH_CM_combined.png")
+combined_image.save(r".\Output\LSTM\LSTM_LSZH_CM_combined.png")
 
 # Cierra las imágenes originales
 for img in images:

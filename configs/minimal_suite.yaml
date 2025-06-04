@@ -1,0 +1,10 @@
+# Minimal Suite Configuration Example
+# This shows the bare minimum required for a suite YAML file
+
+name: "minimal_suite"
+experiments:
+  - name: "experiment_1"
+    config_file: "configs/quick_test.yaml"
+
+  - name: "experiment_2"
+    config_file: "configs/production.yaml"

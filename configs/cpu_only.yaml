@@ -1,6 +1,6 @@
-# Quick test configuration with minimal hyperparameters
-name: quick_test
-description: Quick test configuration for development and debugging
+# CPU-only configuration (no TensorFlow models)
+name: cpu_only_test
+description: Configuration for running without GPU/TensorFlow
 version: 1.0.0
 
 # Data configuration
@@ -14,7 +14,7 @@ data:
   random_state: 42
   download_type: 1
   data_path: "./Data"
-  output_path: "./Output/quick_test"
+  output_path: "./Output/cpu_only_test"
   use_minmax_scaler: true
   use_label_binarizer: true
   window_size: 1
@@ -24,24 +24,22 @@ data:
 # Training configuration
 training:
   use_cross_validation: false  # Disable for speed
-  use_early_stopping: true
-  early_stopping_patience: 5
-  use_lr_scheduler: false  # Disable for simplicity
+  use_early_stopping: false  # Not applicable for Random Forest
   save_best_model: true
   tensorboard: false
   wandb: false
   mlflow: false
   log_interval: 20
-  use_gpu: true
+  use_gpu: false  # Explicitly disable GPU
   mixed_precision: false
   num_workers: 2
 
-# Model configurations - only single values for quick testing
+# Model configurations - only Random Forest
 models:
   random_forest:
-    n_estimators: [50]
+    n_estimators: [100]
     criterion: [gini]
-    max_depth: [7]
+    max_depth: [10]
     min_samples_split: [2]
     min_samples_leaf: [1]
     max_features: [auto]
@@ -49,22 +47,9 @@ models:
     n_jobs: -1
     verbose: 1
 
-  lstm:
-    units: [50]
-    epochs: [10]
-    batch_size: [32]
-    dropout_rate: [0.2]
-    recurrent_dropout: [0.0]
-    activation: tanh
-    optimizer: adam
-    loss: binary_crossentropy
-    learning_rate: [0.001]
-    num_layers: [1]
-    bidirectional: false
-
 # Experiment settings
 experiment_settings:
-  models_to_train: [random_forest, lstm]
+  models_to_train: [random_forest]  # Only non-TensorFlow model
   hyperparameter_tuning: false  # No tuning for quick test
   tuning_method: grid
   tuning_trials: 0

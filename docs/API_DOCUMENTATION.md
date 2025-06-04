@@ -34,6 +34,7 @@ class ExperimentConfig:
 ```
 
 **Parameters:**
+
 - `name`: Unique experiment identifier
 - `description`: Optional experiment description
 - `data`: Data configuration (DataConfig instance)
@@ -43,6 +44,7 @@ class ExperimentConfig:
 - `experiment_tracking`: Optional MLflow tracking configuration
 
 **Methods:**
+
 - `to_dict() -> Dict[str, Any]`: Convert to dictionary
 - `validate() -> bool`: Validate configuration
 - `save(path: str)`: Save configuration to file
@@ -140,7 +142,7 @@ Configuration parsing and management utilities.
 ```python
 class ConfigParser:
     def __init__(self, schema_validation: bool = True)
-    
+
     def load_config(self, config_path: str) -> ExperimentConfig
     def save_config(self, config: ExperimentConfig, output_path: str)
     def parse_dict(self, config_dict: Dict[str, Any]) -> ExperimentConfig
@@ -154,16 +156,20 @@ class ConfigParser:
 Load configuration from YAML or JSON file.
 
 **Parameters:**
+
 - `config_path`: Path to configuration file
 
 **Returns:**
+
 - Parsed ExperimentConfig object
 
 **Raises:**
+
 - `FileNotFoundError`: If file doesn't exist
 - `ValidationError`: If configuration is invalid
 
 **Example:**
+
 ```python
 parser = ConfigParser()
 config = parser.load_config("experiment_config.yaml")
@@ -181,7 +187,7 @@ Data loading and caching utilities.
 
 ```python
 class DataLoader:
-    def __init__(self, 
+    def __init__(self,
                  data_path: str = "./Data",
                  enable_cache: bool = True,
                  cache_ttl_hours: int = 24,
@@ -190,6 +196,7 @@ class DataLoader:
 ```
 
 **Parameters:**
+
 - `data_path`: Base path for data files
 - `enable_cache`: Enable intelligent caching
 - `cache_ttl_hours`: Cache time-to-live in hours
@@ -203,10 +210,12 @@ class DataLoader:
 Load METAR weather observation data.
 
 **Parameters:**
+
 - `file_path`: Path to METAR data file
 - `**kwargs`: Additional pandas read parameters
 
 **Returns:**
+
 - DataFrame with parsed METAR data
 
 **load_regulation_data(file_path: str, **kwargs) -> pd.DataFrame**
@@ -214,13 +223,15 @@ Load METAR weather observation data.
 Load ATFM regulation data.
 
 **Parameters:**
+
 - `file_path`: Path to regulation data file
 - `**kwargs`: Additional pandas read parameters
 
 **Returns:**
+
 - DataFrame with regulation data
 
-**create_features(metar_data: pd.DataFrame, 
+**create_features(metar_data: pd.DataFrame,
                  regulation_data: pd.DataFrame,
                  taf_data: Optional[pd.DataFrame] = None,
                  target_column: str = "has_regulation") -> pd.DataFrame**
@@ -228,12 +239,14 @@ Load ATFM regulation data.
 Create combined feature matrix from all data sources.
 
 **Parameters:**
+
 - `metar_data`: Weather observation data
 - `regulation_data`: Regulation data
 - `taf_data`: Optional forecast data
 - `target_column`: Target variable column name
 
 **Returns:**
+
 - Combined feature DataFrame
 
 #### DataCache
@@ -241,7 +254,7 @@ Create combined feature matrix from all data sources.
 ```python
 class DataCache:
     def __init__(self, cache_dir: str = "./cache", max_size_gb: float = 1.0, ttl_hours: int = 24)
-    
+
     def get(self, key: str) -> Optional[Any]
     def set(self, key: str, value: Any)
     def exists(self, key: str) -> bool
@@ -258,7 +271,7 @@ Data quality validation and monitoring.
 ```python
 class DataValidator:
     def __init__(self, config: Optional[Dict] = None)
-    
+
     def validate_data(self, data: pd.DataFrame) -> Dict[str, Any]
     def validate_weather_data(self, data: pd.DataFrame) -> Dict[str, Any]
     def generate_validation_report(self, validation_results: Dict) -> str
@@ -269,9 +282,11 @@ class DataValidator:
 Validate weather data for quality and consistency.
 
 **Parameters:**
+
 - `data`: Weather DataFrame to validate
 
 **Returns:**
+
 - Validation report dictionary with errors, warnings, and summary
 
 #### AnomalyDetector
@@ -279,8 +294,8 @@ Validate weather data for quality and consistency.
 ```python
 class AnomalyDetector:
     def __init__(self, contamination: float = 0.1)
-    
-    def detect_anomalies(self, 
+
+    def detect_anomalies(self,
                         data: pd.DataFrame,
                         columns: List[str],
                         method: str = "isolation_forest") -> List[int]
@@ -291,11 +306,13 @@ class AnomalyDetector:
 Detect anomalous data points.
 
 **Parameters:**
+
 - `data`: Input DataFrame
 - `columns`: Columns to analyze for anomalies
 - `method`: Detection method ("isolation_forest", "one_class_svm", "local_outlier_factor")
 
 **Returns:**
+
 - List of anomalous row indices
 
 #### DataDriftDetector
@@ -303,7 +320,7 @@ Detect anomalous data points.
 ```python
 class DataDriftDetector:
     def __init__(self, alpha: float = 0.05)
-    
+
     def detect_drift(self,
                     reference_data: pd.DataFrame,
                     current_data: pd.DataFrame,
@@ -319,7 +336,7 @@ Automated feature engineering for weather data.
 ```python
 class WeatherFeatureEngineer:
     def __init__(self, include_derived: bool = True, include_interactions: bool = False)
-    
+
     def create_features(self, data: pd.DataFrame) -> pd.DataFrame
     def calculate_flight_category(self, visibility: pd.Series, ceiling: pd.Series) -> pd.Series
     def calculate_weather_severity(self, data: pd.DataFrame) -> pd.Series
@@ -331,9 +348,11 @@ class WeatherFeatureEngineer:
 Create weather-specific features.
 
 **Parameters:**
+
 - `data`: Input weather DataFrame
 
 **Returns:**
+
 - Enhanced DataFrame with new features including:
   - Flight categories (VFR, MVFR, IFR, LIFR)
   - Weather severity scores
@@ -346,7 +365,7 @@ Create weather-specific features.
 ```python
 class TimeSeriesFeatureEngineer:
     def __init__(self, max_lag: int = 24, default_windows: List[int] = None)
-    
+
     def create_features(self,
                        data: pd.DataFrame,
                        timestamp_col: str = "timestamp",
@@ -359,12 +378,12 @@ class TimeSeriesFeatureEngineer:
 
 ```python
 class AutomatedFeatureEngineer:
-    def __init__(self, 
+    def __init__(self,
                  max_features: int = 100,
                  selection_method: str = "mutual_info",
                  create_polynomials: bool = True,
                  max_polynomial_degree: int = 2)
-    
+
     def create_features(self,
                        data: pd.DataFrame,
                        target_col: str,
@@ -382,7 +401,7 @@ Data preprocessing pipeline components.
 ```python
 class PreprocessingPipeline:
     def __init__(self, steps: Optional[List[Tuple[str, Any]]] = None)
-    
+
     def add_step(self, name: str, transformer: Any)
     def remove_step(self, name: str)
     def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None, **kwargs)
@@ -393,6 +412,7 @@ class PreprocessingPipeline:
 ```
 
 **Example:**
+
 ```python
 pipeline = PreprocessingPipeline()
 pipeline.add_step('scaler', TimeSeriesScaler())
@@ -405,7 +425,7 @@ processed_data = pipeline.fit_transform(data)
 ```python
 class TimeSeriesScaler:
     def __init__(self, method: str = "standard", feature_range: Tuple[float, float] = (0, 1))
-    
+
     def fit(self, X: pd.DataFrame) -> 'TimeSeriesScaler'
     def transform(self, X: pd.DataFrame) -> pd.DataFrame
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame
@@ -425,13 +445,13 @@ Abstract base class for all models.
 ```python
 class BaseModel(ABC):
     def __init__(self, config: BaseModelConfig)
-    
+
     @abstractmethod
     def train(self, X_train, y_train, X_val=None, y_val=None) -> Dict[str, Any]
-    
+
     @abstractmethod  
     def predict(self, X) -> np.ndarray
-    
+
     def predict_proba(self, X) -> np.ndarray
     def evaluate(self, X, y) -> ModelMetrics
     def cross_validate(self, X, y, cv: int = 5) -> Dict[str, List[float]]
@@ -445,13 +465,14 @@ class BaseModel(ABC):
 ```python
 class ModelMetrics:
     def __init__(self)
-    
+
     def calculate_metrics(self, y_true: np.ndarray, y_pred: np.ndarray, y_proba: Optional[np.ndarray] = None)
     def to_dict(self) -> Dict[str, float]
     def __str__(self) -> str
 ```
 
 **Attributes:**
+
 - `accuracy`: Classification accuracy
 - `precision`: Precision score
 - `recall`: Recall score
@@ -466,7 +487,7 @@ class ModelMetrics:
 ```python
 class RandomForestModel(BaseModel):
     def __init__(self, config: RandomForestConfig)
-    
+
     def train(self, X_train, y_train, X_val=None, y_val=None) -> Dict[str, Any]
     def predict(self, X) -> np.ndarray
     def tune_hyperparameters(self, X, y, param_grid: Dict, method: str = "grid", cv: int = 5) -> Dict
@@ -477,7 +498,7 @@ class RandomForestModel(BaseModel):
 ```python
 class LSTMModel(BaseModel):
     def __init__(self, config: LSTMConfig)
-    
+
     def train(self, X_train, y_train, X_val=None, y_val=None) -> Dict[str, Any]
     def predict(self, X) -> np.ndarray
     def prepare_data(self, X, y=None) -> Tuple[np.ndarray, Optional[np.ndarray]]
@@ -489,7 +510,7 @@ class LSTMModel(BaseModel):
 ```python
 class EnsembleModel(BaseModel):
     def __init__(self, config: EnsembleConfig)
-    
+
     def train(self, X_train, y_train, X_val=None, y_val=None) -> Dict[str, Any]
     def predict(self, X) -> np.ndarray
     def get_model_contributions(self) -> Dict[str, float]
@@ -507,11 +528,11 @@ Training management and orchestration.
 
 ```python
 class Trainer:
-    def __init__(self, 
+    def __init__(self,
                  enable_logging: bool = True,
                  checkpoint_dir: Optional[str] = None,
                  experiment_tracker: Optional[ExperimentTracker] = None)
-    
+
     def train_model(self,
                    model: BaseModel,
                    X_train: np.ndarray,
@@ -519,14 +540,14 @@ class Trainer:
                    X_val: Optional[np.ndarray] = None,
                    y_val: Optional[np.ndarray] = None,
                    model_name: str = "model") -> Dict[str, Any]
-    
+
     def cross_validate(self,
                       model: BaseModel,
                       X: np.ndarray,
                       y: np.ndarray,
                       cv_folds: int = 5,
                       model_name: str = "model") -> Dict[str, Any]
-    
+
     def train_ensemble(self,
                       models: Dict[str, BaseModel],
                       X_train: np.ndarray,
@@ -541,6 +562,7 @@ class Trainer:
 Train a single model with validation.
 
 **Parameters:**
+
 - `model`: Model instance to train
 - `X_train`: Training features
 - `y_train`: Training targets
@@ -549,6 +571,7 @@ Train a single model with validation.
 - `model_name`: Name for the trained model
 
 **Returns:**
+
 - Dictionary with training results including metrics and timing
 
 #### ExperimentTracker
@@ -556,7 +579,7 @@ Train a single model with validation.
 ```python
 class ExperimentTracker:
     def __init__(self, experiment_name: str, tracking_uri: Optional[str] = None)
-    
+
     def start_run(self, run_name: Optional[str] = None)
     def end_run(self)
     def log_params(self, params: Dict[str, Any])
@@ -574,7 +597,7 @@ Hyperparameter optimization methods.
 ```python
 class GridSearchTuner:
     def __init__(self, scoring: str = "accuracy", n_jobs: int = -1)
-    
+
     def tune(self,
             model: BaseModel,
             param_grid: Dict[str, List],
@@ -590,7 +613,7 @@ class GridSearchTuner:
 ```python
 class BayesianOptimizationTuner:
     def __init__(self, n_trials: int = 100, random_state: Optional[int] = None)
-    
+
     def tune(self,
             model: BaseModel,
             param_space: Dict[str, List],
@@ -608,7 +631,7 @@ class TuningResult:
                  best_params: Dict[str, Any],
                  best_score: float,
                  all_results: List[Dict[str, Any]])
-    
+
     def save(self, path: str)
     def load(path: str) -> 'TuningResult'
     def plot_optimization_history(self) -> go.Figure
@@ -628,7 +651,7 @@ Structured storage and retrieval of experimental results.
 ```python
 class ResultsManager:
     def __init__(self, base_path: str = "./results")
-    
+
     def generate_experiment_id(self) -> str
     def save_model_result(self, result: ModelResult, experiment_id: Optional[str] = None) -> str
     def save_experiment_result(self, experiment: ExperimentResult) -> str
@@ -645,9 +668,11 @@ class ResultsManager:
 Save complete experiment results.
 
 **Parameters:**
+
 - `experiment`: ExperimentResult object containing all model results
 
 **Returns:**
+
 - Experiment ID string
 
 **compare_experiments(experiment_ids: List[str], metric: str) -> pd.DataFrame**
@@ -655,10 +680,12 @@ Save complete experiment results.
 Compare performance across multiple experiments.
 
 **Parameters:**
+
 - `experiment_ids`: List of experiment IDs to compare
 - `metric`: Metric to compare ('test_accuracy', 'test_f1', etc.)
 
 **Returns:**
+
 - DataFrame with comparison results
 
 #### ModelResult
@@ -669,23 +696,23 @@ class ModelResult:
     model_type: str
     timestamp: datetime
     config: Dict[str, Any]
-    
+
     # Training metrics
     training_time: float
     training_history: Optional[Dict[str, List[float]]]
-    
+
     # Test metrics  
     test_accuracy: Optional[float]
     test_precision: Optional[float]
     test_recall: Optional[float]
     test_f1: Optional[float]
     test_auc: Optional[float]
-    
+
     # Additional data
     confusion_matrix: Optional[np.ndarray]
     feature_importance: Optional[pd.DataFrame]
     predictions: Optional[np.ndarray]
-    
+
     def to_dict(self) -> Dict[str, Any]
     def from_dict(cls, data: Dict[str, Any]) -> 'ModelResult'
 ```
@@ -699,12 +726,12 @@ class ExperimentResult:
     timestamp: datetime
     config: ExperimentConfig
     model_results: Dict[str, ModelResult]
-    
+
     # Aggregate metrics
     best_model: Optional[str]
     best_accuracy: Optional[float]
     comparison_metrics: Optional[pd.DataFrame]
-    
+
     def add_model_result(self, result: ModelResult)
     def get_best_model_result(self) -> Optional[ModelResult]
     def generate_summary(self) -> Dict[str, Any]
@@ -719,7 +746,7 @@ Multi-format report generation.
 ```python
 class ReportGenerator:
     def __init__(self, template_dir: Optional[str] = None)
-    
+
     def generate_report(self,
                        experiment: ExperimentResult,
                        format: str = 'html',
@@ -732,15 +759,18 @@ class ReportGenerator:
 Generate comprehensive experiment report.
 
 **Parameters:**
+
 - `experiment`: ExperimentResult object
 - `format`: Output format ('html', 'pdf', 'markdown', 'latex', 'pptx')
 - `output_path`: Optional output file path
 - `include_visualizations`: Whether to include charts and plots
 
 **Returns:**
+
 - Path to generated report file
 
 **Supported Formats:**
+
 - **HTML**: Interactive report with Bootstrap styling and Plotly charts
 - **PDF**: Professional PDF using ReportLab
 - **Markdown**: Documentation-friendly format
@@ -760,7 +790,7 @@ Advanced plotting and visualization utilities.
 ```python
 class ModelVisualizer:
     def __init__(self, save_path: str = "./visualizations")
-    
+
     def plot_confusion_matrix(self,
                              y_true: np.ndarray,
                              y_pred: np.ndarray,
@@ -769,28 +799,28 @@ class ModelVisualizer:
                              normalize: bool = True,
                              interactive: bool = True,
                              save_name: Optional[str] = None) -> Union[go.Figure, plt.Figure]
-    
+
     def plot_roc_curves(self,
                        y_true: np.ndarray,
                        y_scores: Dict[str, np.ndarray],
                        title: str = "ROC Curves Comparison",
                        interactive: bool = True,
                        save_name: Optional[str] = None) -> Union[go.Figure, plt.Figure]
-    
+
     def plot_feature_importance(self,
                                importance_data: Dict[str, pd.DataFrame],
                                top_n: int = 20,
                                title: str = "Feature Importance Comparison",
                                interactive: bool = True,
                                save_name: Optional[str] = None) -> Union[go.Figure, plt.Figure]
-    
+
     def plot_training_history(self,
                              histories: Dict[str, Dict[str, List[float]]],
                              metrics: List[str] = ['loss', 'accuracy'],
                              title: str = "Training History",
                              interactive: bool = True,
                              save_name: Optional[str] = None) -> Union[go.Figure, plt.Figure]
-    
+
     def plot_model_comparison(self,
                              comparison_df: pd.DataFrame,
                              metrics: List[str] = ['accuracy', 'precision', 'recall', 'f1_score'],
@@ -804,19 +834,19 @@ class ModelVisualizer:
 ```python
 class WeatherVisualizer:
     def __init__(self, save_path: str = "./visualizations")
-    
+
     def plot_weather_patterns(self,
                              weather_data: pd.DataFrame,
                              features: List[str] = ['temperature', 'pressure', 'wind_speed'],
                              title: str = "Weather Patterns",
                              save_name: Optional[str] = None) -> go.Figure
-    
+
     def plot_regulation_analysis(self,
                                regulation_data: pd.DataFrame,
                                weather_data: pd.DataFrame,
                                title: str = "Regulation vs Weather Analysis",
                                save_name: Optional[str] = None) -> go.Figure
-    
+
     def plot_airport_comparison(self,
                               airport_data: Dict[str, pd.DataFrame],
                               metric: str = 'regulation_rate',
@@ -833,13 +863,14 @@ Interactive dashboard for model comparison.
 ```python
 class ModelComparisonDashboard:
     def __init__(self, results_path: str = "./results")
-    
+
     def create_layout(self)
     def setup_callbacks(self)
     def run(self, debug: bool = False, port: int = 8050)
 ```
 
 **Dashboard Tabs:**
+
 - **Overview**: Experiment summaries and key metrics
 - **Model Performance**: Accuracy comparisons and radar charts  
 - **Detailed Comparison**: Side-by-side model analysis
@@ -849,6 +880,7 @@ class ModelComparisonDashboard:
 - **Reports**: Export and download functionality
 
 **Usage:**
+
 ```python
 dashboard = ModelComparisonDashboard(results_path="./results")
 dashboard.run(port=8050)
@@ -878,7 +910,7 @@ Create ModelResult from predictions and true labels.
 #### plot_model_results
 
 ```python
-def plot_model_results(results: Dict[str, Any], 
+def plot_model_results(results: Dict[str, Any],
                       save_path: str = "./visualizations") -> Dict[str, Any]
 ```
 
@@ -893,6 +925,7 @@ def create_tuner(tuner_type: str, **kwargs) -> BaseTuner
 Factory function to create hyperparameter tuners.
 
 **Parameters:**
+
 - `tuner_type`: Type of tuner ('grid', 'random', 'bayesian', 'keras', 'ray', 'multi_objective')
 - `**kwargs`: Tuner-specific parameters
 
@@ -986,17 +1019,17 @@ class CustomModel(BaseModel):
     def __init__(self, config: CustomModelConfig):
         super().__init__(config)
         self.model = None
-    
+
     def train(self, X_train, y_train, X_val=None, y_val=None):
         # Implement training logic
         start_time = time.time()
-        
+
         # Your training code here
         self.model = YourModelClass(**self.config.__dict__)
         self.model.fit(X_train, y_train)
-        
+
         training_time = time.time() - start_time
-        
+
         # Evaluate
         if X_val is not None and y_val is not None:
             y_pred = self.predict(X_val)
@@ -1005,9 +1038,9 @@ class CustomModel(BaseModel):
                 'accuracy': metrics.accuracy,
                 'training_time': training_time
             }
-        
+
         return {'training_time': training_time}
-    
+
     def predict(self, X):
         if self.model is None:
             raise ValueError("Model must be trained first")

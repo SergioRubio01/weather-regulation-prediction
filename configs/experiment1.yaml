@@ -1,0 +1,39 @@
+name: experiment1
+description: Experiment with my own data
+
+# Data configuration
+data:
+  airports: [EGLL]  # Replace with your airport codes
+  time_init: "2017-01-01 00:50:00"  # Your data start date
+  time_end: "2019-12-08 23:50:00"   # Your data end date
+  time_delta: 30  # Time step for feature creation in minutes
+  data_path: "./data"
+  output_path: "./output/experiment1"
+  test_size: 0.2
+  validation_size: 0.2
+  random_state: 42
+
+# Training configuration
+training:
+  use_cross_validation: true
+  use_early_stopping: true
+  early_stopping_patience: 10
+
+# Model configurations
+models:
+  random_forest:
+    n_estimators: [100]
+    max_depth: [10, 15]
+
+  lstm:
+    units: [64]
+    epochs: [50]
+    batch_size: [32]
+    dropout_rate: [0.3]
+
+# Experiment settings
+experiment_settings:
+  models_to_train: [random_forest, lstm]  # Choose models to run
+  hyperparameter_tuning: true
+  tuning_method: bayesian  # grid, random, or bayesian
+  tuning_trials: 50

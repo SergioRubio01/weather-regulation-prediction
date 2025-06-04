@@ -41,27 +41,32 @@ The Weather Regulation Prediction System is designed to predict ATFM regulations
 ## Features
 
 ### 🚀 **13 Machine Learning Models**
+
 - **Traditional ML**: Random Forest, Feedforward Neural Networks
 - **Deep Learning**: LSTM, CNN, RNN, GRU, Transformer, Attention-LSTM
 - **Advanced**: WaveNet, Autoencoder, Ensemble methods, Hybrid CNN-RNN/LSTM
 
 ### 🔧 **6 Hyperparameter Tuning Methods**
+
 - Grid Search, Random Search, Bayesian Optimization
 - Keras Tuner, Ray Tune, Multi-objective optimization
 
 ### 📊 **Comprehensive Data Pipeline**
+
 - Intelligent data loading with caching
 - Advanced data validation and quality checks
 - Automated feature engineering for weather data
 - Flexible preprocessing with sklearn integration
 
 ### 📈 **Results and Visualization**
+
 - Interactive dashboards with Dash
 - Advanced plotting with Plotly and Matplotlib
 - Multi-format report generation (HTML, PDF, LaTeX, PowerPoint)
 - MLflow experiment tracking
 
 ### ⚡ **High Performance**
+
 - Distributed training support
 - Parallel processing capabilities
 - Memory optimization
@@ -511,7 +516,7 @@ data:
   end_date: "2023-12-31"
   weather_data_path: "./Data/METAR/"
   regulation_data_path: "./Data/Regulations/"
-  
+
 training:
   test_size: 0.2
   validation_size: 0.2
@@ -519,7 +524,7 @@ training:
   cross_validation: true
   cv_folds: 5
   stratify: true
-  
+
 models:
   random_forest:
     n_estimators: 100
@@ -527,7 +532,7 @@ models:
     min_samples_split: 2
     min_samples_leaf: 1
     random_state: 42
-    
+
   lstm:
     units: 64
     dropout: 0.3
@@ -536,20 +541,20 @@ models:
     epochs: 50
     sequence_length: 24
     bidirectional: true
-    
+
   transformer:
     d_model: 128
     num_heads: 8
     num_layers: 4
     dropout: 0.1
     sequence_length: 24
-    
+
 hyperparameter_tuning:
   enabled: true
   method: "bayesian"  # grid, random, bayesian
   n_trials: 100
   cv_folds: 3
-  
+
 experiment_tracking:
   enabled: true
   mlflow_uri: "./mlruns"
@@ -601,19 +606,23 @@ param_grid = parser.generate_param_grid(config.models['random_forest'])
 ### Model Selection Guidelines
 
 **For Quick Results:**
+
 - Random Forest: Fast training, good baseline
 - FNN: Simple neural network approach
 
 **For Sequential Data:**
+
 - LSTM: Complex temporal patterns
 - GRU: Simpler alternative to LSTM
 - Transformer: State-of-the-art attention-based
 
 **For Feature Learning:**
+
 - Autoencoder: Unsupervised feature extraction
 - CNN: Spatial pattern recognition
 
 **For Best Performance:**
+
 - Ensemble: Combines multiple models
 - Attention-LSTM: Advanced temporal modeling
 - Transformer: Cutting-edge architecture
@@ -705,6 +714,7 @@ selected_features = auto_eng.create_features(
 ### Tuning Methods
 
 #### 1. Grid Search
+
 ```python
 from training.hyperparameter_tuning import GridSearchTuner
 
@@ -717,6 +727,7 @@ result = tuner.tune(model, param_grid, X_train, y_train, X_val, y_val)
 ```
 
 #### 2. Random Search
+
 ```python
 from training.hyperparameter_tuning import RandomSearchTuner
 
@@ -729,6 +740,7 @@ result = tuner.tune(model, param_distributions, X_train, y_train, X_val, y_val)
 ```
 
 #### 3. Bayesian Optimization
+
 ```python
 from training.hyperparameter_tuning import BayesianOptimizationTuner
 
@@ -742,6 +754,7 @@ result = tuner.tune(model, param_space, X_train, y_train, X_val, y_val)
 ```
 
 #### 4. Keras Tuner (for deep learning models)
+
 ```python
 from training.hyperparameter_tuning import KerasTuner
 
@@ -750,6 +763,7 @@ result = tuner.tune(lstm_model, X_train, y_train, X_val, y_val)
 ```
 
 #### 5. Ray Tune (distributed)
+
 ```python
 from training.hyperparameter_tuning import RayTuneTuner
 
@@ -762,6 +776,7 @@ result = tuner.tune(model, param_space, X_train, y_train, X_val, y_val)
 ```
 
 #### 6. Multi-objective Optimization
+
 ```python
 from training.hyperparameter_tuning import MultiObjectiveTuner
 
@@ -847,6 +862,7 @@ dashboard.run(debug=False, port=8050)
 ```
 
 The dashboard provides:
+
 - **Overview**: Experiment summaries and key metrics
 - **Performance**: Model accuracy comparisons and radar charts
 - **Comparison**: Side-by-side detailed analysis
@@ -1012,15 +1028,15 @@ class NewModelConfig(BaseModelConfig):
 class NewModel(BaseModel):
     def __init__(self, config: NewModelConfig):
         super().__init__(config)
-    
+
     def _build_model(self, input_shape):
         # Implement model architecture
         pass
-    
+
     def train(self, X, y, X_val=None, y_val=None):
         # Implement training logic
         pass
-    
+
     def predict(self, X):
         # Implement prediction logic
         pass
@@ -1051,9 +1067,9 @@ If you use this system in your research, please cite:
 ```bibtex
 @software{weather_regulation_prediction,
   title={Weather Regulation Prediction System},
-  author={Research Team},
-  year={2024},
-  url={https://github.com/your-repo/weather-regulation-prediction}
+  author={Sergio García},
+  year={2025},
+  url={https://github.com/sergiorubio01/weather-regulation-prediction}
 }
 ```
 
@@ -1064,7 +1080,6 @@ For questions, issues, or contributions:
 - **Documentation**: Check this README and inline code documentation
 - **Issues**: Report bugs and feature requests via GitHub Issues
 - **Discussions**: Use GitHub Discussions for questions and ideas
-- **Email**: Contact the development team at [email]
 
 ---
 

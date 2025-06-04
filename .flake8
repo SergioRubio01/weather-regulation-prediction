@@ -1,0 +1,35 @@
+[flake8]
+max-line-length = 100
+max-complexity = 10
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist,
+    .venv,
+    venv,
+    .tox,
+    .eggs,
+    *.egg
+ignore =
+    E203,  # whitespace before ':'
+    E266,  # too many leading '#' for block comment
+    E501,  # line too long (handled by Black)
+    W503,  # line break before binary operator
+    F403,  # 'from module import *' used
+    F401,  # module imported but unused
+    D100,  # Missing docstring in public module
+    D101,  # Missing docstring in public class
+    D102,  # Missing docstring in public method
+    D103,  # Missing docstring in public function
+    D104,  # Missing docstring in public package
+    D105,  # Missing docstring in magic method
+    D106,  # Missing docstring in public nested class
+    D107,  # Missing docstring in __init__
+per-file-ignores =
+    __init__.py:F401
+    tests/*:F401,F811
+select = B,C,E,F,W,T4,B9
+extend-ignore = E203, E266, E501, W503
