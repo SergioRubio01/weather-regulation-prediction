@@ -273,6 +273,7 @@ For details on the script organization, see [scripts/README.md](scripts/README.m
 
 - **[CLAUDE.md](CLAUDE.md)**: Comprehensive guidance for Claude Code when working with this system
 - **[BALANCED_DATASET_PROCEDURE.md](BALANCED_DATASET_PROCEDURE.md)**: Detailed documentation on the balanced dataset approach
+- **[DEEP_LEARNING_RESULTS_SUMMARY.md](DEEP_LEARNING_RESULTS_SUMMARY.md)**: Comprehensive results from deep learning model training on balanced dataset
 - **[REFACTORING_PLAN.md](REFACTORING_PLAN.md)**: System refactoring plan and progress
 - **[docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)**: Complete API reference for all modules
 - **[docs/PRECOMMIT_SETUP.md](docs/PRECOMMIT_SETUP.md)**: Pre-commit hooks configuration guide
@@ -1020,6 +1021,20 @@ Using the balanced dataset approach on EGLL airport data:
 - **F1 Score**: From 0.071 to 0.879 (1140% improvement)
 - **Recall**: From 17% to 100%
 - **AUC**: From 0.757 to 0.954
+
+### Deep Learning Models Performance
+
+We have successfully trained 7 deep learning models on the balanced dataset:
+
+- **CNN**: F1=0.830 (best deep learning performance)
+- **FNN**: F1=0.807
+- **LSTM**: F1=0.678
+- **GRU**: F1=0.676
+- **RNN**: F1=0.676
+- **Transformer**: F1=0.674
+- **Attention-LSTM**: F1=0.674
+
+While traditional ML models (Gradient Boosting: F1=0.879) still outperform deep learning approaches, the CNN model shows promising results. See [DEEP_LEARNING_RESULTS_SUMMARY.md](DEEP_LEARNING_RESULTS_SUMMARY.md) for detailed analysis.
 
 ### Usage
 

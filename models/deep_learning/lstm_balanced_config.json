@@ -1,0 +1,32 @@
+{
+  "model_type": "LSTM",
+  "training_date": "2025-06-04T14:15:23.089289",
+  "sequence_length": 12,
+  "architecture": {
+    "lstm_units": [
+      64,
+      32
+    ],
+    "dropout": 0.2,
+    "recurrent_dropout": 0.2,
+    "dense_units": 16
+  },
+  "training": {
+    "epochs": 16,
+    "batch_size": 32,
+    "learning_rate": 0.001
+  },
+  "performance": {
+    "test_accuracy": 0.4868420958518982,
+    "test_auc": 0.4917609691619873,
+    "test_f1": 0.6782608695652174,
+    "optimal_threshold": 0.1
+  },
+  "dataset": {
+    "total_samples": 1596,
+    "train_samples": 1105,
+    "val_samples": 227,
+    "test_samples": 228,
+    "features": 24
+  }
+}

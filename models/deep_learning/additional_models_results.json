@@ -1,0 +1,20 @@
+{
+  "FNN": {
+    "test_accuracy": 0.7749999761581421,
+    "test_auc": 0.8570486307144165,
+    "test_f1": 0.8072727272727273,
+    "optimal_threshold": 0.45000000000000007
+  },
+  "RNN": {
+    "test_accuracy": 0.5086206793785095,
+    "test_auc": 0.49442461133003235,
+    "test_f1": 0.6762177650429799,
+    "optimal_threshold": 0.15000000000000002
+  },
+  "Attention-LSTM": {
+    "test_accuracy": 0.5344827771186829,
+    "test_auc": 0.5846342444419861,
+    "test_f1": 0.6742857142857143,
+    "optimal_threshold": 0.1
+  }
+}
