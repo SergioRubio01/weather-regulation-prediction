@@ -261,6 +261,25 @@ scaler_path = output_dir / "lstm_scaler.pkl"
 joblib.dump(scaler, scaler_path)
 print(f"   Scaler saved to: {scaler_path}")
 
+# Generate visualizations
+print("\n10. Generating visualizations...")
+from visualize_dl_results import DeepLearningVisualizer
+
+visualizer = DeepLearningVisualizer()
+
+# Plot training history
+if history:
+    visualizer.plot_training_history(history.history, "LSTM")
+
+# Plot confusion matrix
+visualizer.plot_confusion_matrix(y_test_seq, y_pred_optimal, "LSTM")
+
+# Plot ROC and PR curves
+visualizer.plot_roc_pr_curves(y_test_seq, y_pred_proba.flatten(), "LSTM")
+
+# Plot threshold analysis
+visualizer.plot_threshold_analysis(y_test_seq, y_pred_proba.flatten(), "LSTM")
+
 print("\n" + "=" * 60)
 print("LSTM Training Complete!")
 print("=" * 60)
@@ -274,3 +293,4 @@ print(f"  - Gradient Boosting: F1=0.879")
 print(f"  - Random Forest: F1=0.835")
 print(f"  - CNN: F1=0.830")
 print(f"  - LSTM: F1={best_f1:.3f}")
+print(f"\nVisualizations saved to: visualizations/deep_learning/")

@@ -1,0 +1,86 @@
+{
+  "FNN": {
+    "test_accuracy": 0.7749999761581421,
+    "test_auc": 0.8570486307144165,
+    "test_f1": 0.8072727272727273,
+    "optimal_threshold": 0.45000000000000007,
+    "performance": {
+      "f1_score": 0.8072727272727273,
+      "accuracy": 0.7791666666666667,
+      "precision": 0.7161290322580646,
+      "recall": 0.925,
+      "auc": 0.8568055555555556,
+      "optimal_threshold": 0.45000000000000007
+    },
+    "dataset": {
+      "total_samples": 1596,
+      "test_samples": 240,
+      "features": 24,
+      "positive_ratio": 0.5
+    }
+  },
+  "RNN": {
+    "test_accuracy": 0.5086206793785095,
+    "test_auc": 0.49442461133003235,
+    "test_f1": 0.6762177650429799,
+    "optimal_threshold": 0.15000000000000002,
+    "performance": {
+      "f1_score": 0.6762177650429799,
+      "accuracy": 0.5129310344827587,
+      "precision": 0.5108225108225108,
+      "recall": 1.0,
+      "auc": 0.49524234314600063,
+      "optimal_threshold": 0.15000000000000002
+    },
+    "dataset": {
+      "total_samples": 1596,
+      "test_samples": 240,
+      "features": 24,
+      "positive_ratio": 0.5
+    }
+  },
+  "Attention-LSTM": {
+    "test_accuracy": 0.5344827771186829,
+    "test_auc": 0.5846342444419861,
+    "test_f1": 0.6742857142857143,
+    "optimal_threshold": 0.1,
+    "dataset": {
+      "total_samples": 1596,
+      "test_samples": 240,
+      "features": 24,
+      "positive_ratio": 0.5
+    }
+  },
+  "LSTM": {
+    "performance": {
+      "f1_score": 0.6742857142857143,
+      "accuracy": 0.5086206896551724,
+      "precision": 0.5086206896551724,
+      "recall": 1.0,
+      "auc": 0.5009292298542968,
+      "optimal_threshold": 0.1
+    },
+    "dataset": {
+      "total_samples": 1596,
+      "test_samples": 240,
+      "features": 24,
+      "positive_ratio": 0.5
+    }
+  },
+  "GRU": {
+    "performance": {
+      "f1_score": 0.6762177650429799,
+      "accuracy": 0.5129310344827587,
+      "precision": 0.5108225108225108,
+      "recall": 1.0,
+      "auc": 0.544751709782932,
+      "optimal_threshold": 0.3500000000000001
+    },
+    "dataset": {
+      "total_samples": 1596,
+      "test_samples": 240,
+      "features": 24,
+      "positive_ratio": 0.5
+    }
+  }
+}

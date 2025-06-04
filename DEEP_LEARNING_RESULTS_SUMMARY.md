@@ -122,6 +122,57 @@ All trained models and results are saved in `models/deep_learning/`:
 - `additional_models_results.json`
 - `gru_transformer_results.json`
 
+## Visualizations
+
+### Available Visualizations
+
+The project now includes comprehensive visualization capabilities for all deep learning models:
+
+#### Individual Model Visualizations
+For each model, the following plots are generated:
+1. **Training History**: Loss, accuracy, AUC, and learning rate curves over epochs
+2. **Confusion Matrix**: Visual representation with performance metrics overlay
+3. **ROC & PR Curves**: Receiver Operating Characteristic and Precision-Recall curves with AUC scores
+4. **Threshold Analysis**: Optimization of probability threshold for best F1 score
+
+#### Comparison Visualizations
+1. **Model Performance Comparison**: Bar charts and radar plots comparing all models
+2. **Prediction Distributions**: Histograms showing how each model separates classes
+3. **Comprehensive Summary**: Multi-panel report with rankings, metrics table, and insights
+
+### Generating Visualizations
+
+To generate all visualizations for the trained models:
+```bash
+python scripts/balanced_dataset/generate_all_visualizations.py
+```
+
+To add visualizations to new model training:
+```python
+from visualize_dl_results import DeepLearningVisualizer
+
+visualizer = DeepLearningVisualizer()
+visualizer.plot_training_history(history.history, "ModelName")
+visualizer.plot_confusion_matrix(y_test, y_pred, "ModelName")
+visualizer.plot_roc_pr_curves(y_test, y_scores, "ModelName")
+```
+
+### Visual Insights
+
+The visualizations reveal several key patterns:
+1. **Calibration Issues**: RNN-based models show poor probability calibration (optimal threshold = 0.10)
+2. **Class Separation**: CNN achieves better class separation than other DL models
+3. **Quick Convergence**: Most models converge within 10-15 epochs due to small dataset size
+4. **Performance Plateau**: Visual evidence of the performance gap between traditional ML and DL
+
+### Visualization Files
+
+All generated visualizations are saved to `visualizations/deep_learning/`:
+- Individual model plots: `{model_name}_{plot_type}.png`
+- Comparison plots: `model_comparison.png`, `prediction_distributions.png`
+- Summary report: `comprehensive_summary.png`
+- Markdown summary: `VISUAL_RESULTS_SUMMARY.md`
+
 ## Conclusion
 
-While deep learning models show promise, traditional machine learning approaches (particularly ensemble methods like Gradient Boosting) remain superior for this weather regulation prediction task. The structured, tabular nature of weather data and the relatively small dataset size favor traditional ML algorithms over deep learning approaches.
+While deep learning models show promise, traditional machine learning approaches (particularly ensemble methods like Gradient Boosting) remain superior for this weather regulation prediction task. The structured, tabular nature of weather data and the relatively small dataset size favor traditional ML algorithms over deep learning approaches. The comprehensive visualizations provide clear evidence of this performance gap and highlight areas for potential improvement.
