@@ -226,7 +226,9 @@ if hasattr(results[best_model_name]["model"], "feature_importances_"):
         print(f"   {row['feature']:<30} {row['importance']:.4f}")
 
     # Save feature importance
-    importance_df.to_csv("results/balanced_feature_importance.csv", index=False)
+    importance_df.to_csv(
+        "visualizations/traditional_ml/balanced_feature_importance.csv", index=False
+    )
 
 # 10. Create visualization
 print("\n10. Creating performance visualizations...")
@@ -330,8 +332,10 @@ ax.legend()
 ax.set_ylim(0, 1.1)
 
 plt.tight_layout()
-plt.savefig("results/balanced_model_performance.png", dpi=300, bbox_inches="tight")
-print("   Saved visualizations to: results/balanced_model_performance.png")
+plt.savefig(
+    "visualizations/traditional_ml/balanced_model_performance.png", dpi=300, bbox_inches="tight"
+)
+print("   Saved visualizations to: visualizations/traditional_ml/balanced_model_performance.png")
 
 # 11. Save best model
 print(f"\n11. Saving best model ({best_model_name})...")

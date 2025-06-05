@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides comprehensive guidance to Claude Code (claude.ai/code) when working with this advanced weather regulation prediction system.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
@@ -44,23 +44,54 @@ This is a comprehensive **Weather Regulation Prediction System** for airports in
 
 ## Common Commands
 
-### Basic Usage
+### Installation & Setup
 
 ```bash
 # Install dependencies using Poetry
 poetry install
 
-# Activate virtual environment
-poetry env activate
+# Install dev dependencies for linting and testing
+poetry install --with dev
 
-# Run quick experiment with default config
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Development
+
+```bash
+# Run linting and code quality checks
+ruff check .                    # Fast Python linter
+black .                        # Code formatter
+mypy .                         # Type checking
+flake8 .                       # Style guide enforcement
+pylint src/ models/ data/      # Code analysis
+
+# Run tests
+pytest                         # Run all tests
+pytest -v                      # Verbose output
+pytest tests/test_models.py    # Run specific test file
+pytest -m "not slow"           # Skip slow tests
+pytest --cov=. --cov-report=html  # With coverage report
+
+# Run pre-commit on all files
+pre-commit run --all-files
+```
+
+### Basic Model Training
+
+```bash
+# RECOMMENDED: Run balanced dataset pipeline (best results)
+cd scripts/balanced_dataset
+python run_balanced_pipeline.py
+
+# For deep learning models on balanced data
+python train_lstm_balanced.py
+python train_additional_models.py
+python visualize_dl_results.py
+
+# Legacy: Run experiment with config (original system)
 python run_experiments.py --config configs/quick_test.yaml
-
-# Run specific model
-python run_experiments.py --models random_forest lstm
-
-# Run with hyperparameter tuning
-python run_experiments.py --tune --tuner bayesian --trials 50
 ```
 
 ### Advanced Usage
@@ -78,21 +109,21 @@ python -c "from visualization.dashboard import ModelComparisonDashboard; ModelCo
 # Run performance benchmarks
 pytest tests/test_performance.py -m benchmark
 
-# Run all tests
-pytest tests/ --cov=. --cov-report=html
+# Run integration tests
+pytest tests/test_integration.py -v
 ```
 
 ### Legacy Compatibility
 
 ```bash
 # Run legacy pipeline (maintains backward compatibility)
-python model.py  # Uses legacy Dly_Classifier class
+python scripts/legacy/model.py  # Uses legacy Dly_Classifier class
 
 # Process TAF files (legacy)
-python filter_TAFs.py
+python scripts/legacy/filter_TAFs.py
 
 # Generate legacy plots
-python plots.py
+python scripts/legacy/plots.py
 ```
 
 ## Modern Architecture (Post-Refactoring)
@@ -311,65 +342,164 @@ hyperparameter_tuning:
 ### Output Structure
 
 ```bash
-./Output/
-├── results/                  # Structured experiment results
-├── visualizations/           # Generated plots and charts
-├── reports/                  # Multi-format reports
-└── models/                   # Saved model artifacts
+./results/                     # Results management modules only
+├── __init__.py
+├── report_generator.py
+└── results_manager.py
+
+./visualizations/              # All generated plots and charts
+├── traditional_ml/           # Traditional ML visualizations
+│   ├── model_performance.png
+│   ├── balanced_model_performance.png
+│   ├── feature_importance.csv
+│   └── balanced_feature_importance.csv
+└── deep_learning/           # Deep learning visualizations
+    ├── *_confusion_matrix.png
+    ├── *_roc_pr_curves.png
+    └── model_comparison.png
+
+./experiment_results/          # Experiment outputs from run_experiments.py
+./models/                      # Saved model artifacts
+├── balanced_weather_regulation_model.pkl
+└── deep_learning/            # Deep learning model checkpoints
 ```
 
-## Important Notes for Development
+## High-Level Architecture
+
+### Two Workflow Systems
+
+#### 1. Balanced Dataset Pipeline (Recommended)
+
+Located in `scripts/balanced_dataset/`, this achieves dramatically better results:
+
+- **Entry point**: `run_balanced_pipeline.py`
+- **Key innovation**: Intelligent time-window sampling around regulation events
+- **Performance**: F1 score improved from 0.071 → 0.879 (1,138% improvement)
+- **Best for**: Production use and new experiments
+
+#### 2. Original Experiment System (Legacy)
+
+The `run_experiments.py` system offers more flexibility:
+
+- **Entry point**: `run_experiments.py`
+- **Features**: 13 models, 6 hyperparameter tuning methods, YAML configs
+- **Best for**: Custom experiments and research
+
+### Core Design Principles
+
+1. **Modular Architecture**: Each component (data, models, training, visualization) is self-contained
+2. **Configuration-Driven**: All experiments are controlled via YAML configurations
+3. **Type Safety**: Extensive use of dataclasses and type hints throughout
+4. **Backward Compatibility**: Legacy scripts maintained in `scripts/legacy/`
+
+### Key Architectural Patterns
+
+#### 1. Abstract Base Model Pattern
+
+All models inherit from `BaseModel` which enforces a consistent interface:
+
+- `train()`: Training logic with validation support
+- `predict()`: Prediction with probability scores
+- `_build_model()`: Model-specific architecture
+- Automatic metrics calculation and history tracking
+
+#### 2. Configuration Hierarchy
+
+```
+ExperimentConfig (top-level)
+├── DataConfig (data sources and preprocessing)
+├── TrainingConfig (training parameters)
+├── Model-specific configs (RandomForestConfig, LSTMConfig, etc.)
+└── HyperparameterTuningConfig (tuning settings)
+```
+
+#### 3. Pipeline Architecture
+
+```
+Data Loading → Validation → Feature Engineering → Preprocessing →
+Model Training → Hyperparameter Tuning → Results Management → Visualization
+```
+
+#### 4. Experiment Management
+
+- Each experiment gets a unique ID and timestamp
+- Results are stored in structured format (JSON + artifacts)
+- Support for experiment comparison and aggregation
+- MLflow integration for tracking
+
+### Model Registry
+
+Models are dynamically loaded based on availability:
+
+- **Always Available**: RandomForest, FNN (sklearn-based)
+- **TensorFlow Required**: LSTM, CNN, GRU, RNN, Transformer, AttentionLSTM, WaveNet, Autoencoder, CNN-RNN, CNN-LSTM
+- **Ensemble**: Requires at least base models to be available
+
+### Data Flow
+
+1. **Raw Data**: METAR CSVs + Regulation CSVs →
+2. **DataLoader**: Merges and aligns time series →
+3. **FeatureEngineer**: Creates weather features (severity, flight categories) →
+4. **Preprocessor**: Scaling, encoding, sequencing →
+5. **Model Input**: Ready for training
+
+### Error Handling Strategy
+
+- Graceful degradation when TensorFlow unavailable
+- Comprehensive validation at each pipeline stage
+- Detailed error messages with recovery suggestions
+- Automatic fallback to simpler models when needed
+
+## Important Implementation Details
 
 ### Adding New Models
 
-1. Inherit from `BaseModel` class
+1. Create model class inheriting from `BaseModel` in `models/`
 2. Implement required methods: `train()`, `predict()`, `_build_model()`
-3. Add configuration class in `config.py`
-4. Register in `run_experiments.py`
-5. Add tests in `tests/test_models.py`
+3. Add configuration dataclass in `src/config.py`
+4. Register model in `run_experiments.py` MODEL_REGISTRY
+5. Add comprehensive tests in `tests/test_models.py`
 
-### Configuration Management
+### Working with Balanced Dataset
 
-- Use type-safe configuration classes
-- Validate configurations before experiments
-- Support environment-specific configs
-- Enable configuration merging and inheritance
+The balanced dataset approach is crucial for handling severe class imbalance:
 
-### Performance Considerations
+- Original data: ~1% positive samples (regulations)
+- Balanced data: 50% positive samples
+- Uses time-window sampling around regulation events
+- Dramatically improves model performance (F1: 0.07 → 0.88)
 
-- Enable caching for repeated data loading
-- Use parallel processing where possible
-- Monitor memory usage during experiments
-- Implement early stopping for long training runs
+Key scripts in `scripts/balanced_dataset/`:
 
-### Testing Strategy
+- `analyze_and_balance_data.py`: Initial analysis and balancing
+- `prepare_balanced_data.py`: Feature engineering for balanced data
+- `train_balanced_model.py`: Model training on balanced dataset
+- `run_balanced_pipeline.py`: Complete pipeline execution
 
-- Unit tests for individual components
-- Integration tests for end-to-end workflows
-- Performance benchmarks for scalability
-- Compatibility tests for legacy support
+### Testing Best Practices
 
-### Legacy Support
+```bash
+# Always run tests before committing
+pytest tests/test_models.py::TestRandomForest  # Test specific model
+pytest -k "test_train" -v                       # Test all training methods
+pytest --cov=models --cov-report=term-missing   # Check coverage
 
-- The system maintains full backward compatibility
-- Legacy `functions.py` and `model.py` still functional
-- Use `use_new_pipeline=True/False` to switch between old and new systems
-- Gradual migration path available
+# Integration tests are critical
+pytest tests/test_integration.py::test_full_pipeline -v
+```
 
-## Troubleshooting
+### Performance Monitoring
 
-### Common Issues
+For production experiments:
 
-- **Missing TensorFlow**: Some deep learning models will skip gracefully
-- **Memory issues**: Reduce batch sizes or enable lazy loading
-- **Performance**: Enable parallel processing and caching
-- **Configuration errors**: Use schema validation for early detection
+1. Enable MLflow tracking in configuration
+2. Monitor memory usage with `psutil` integration
+3. Use `tqdm` progress bars for long-running operations
+4. Check `experiment_results/` for detailed logs
 
-### Performance Optimization
+### Common Pitfalls to Avoid
 
-- Use appropriate data types (float32 vs float64)
-- Enable multiprocessing for CPU-intensive operations
-- Use GPU acceleration when available
-- Implement smart caching strategies
-
-This system represents a complete evolution from the original codebase while maintaining compatibility and providing enterprise-grade capabilities for weather regulation prediction research.
+1. **Data Leakage**: Always split data before any preprocessing
+2. **Config Validation**: Use `ConfigParser.validate_config()` before experiments
+3. **Memory Management**: Use `DataLoader(enable_cache=True)` for large datasets
+4. **Model Persistence**: Always use `joblib` for sklearn models, `keras.save()` for DL models

@@ -24,6 +24,7 @@ scripts = [
 os.makedirs("data", exist_ok=True)
 os.makedirs("models", exist_ok=True)
 os.makedirs("results", exist_ok=True)
+os.makedirs("visualizations/traditional_ml", exist_ok=True)
 
 # Run each script
 for script, description in scripts:
@@ -61,6 +62,6 @@ print(f"Finished at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print("\nResults:")
 print("  - Balanced dataset: data/balanced_weather_data.csv")
 print("  - Trained model: models/balanced_weather_regulation_model.pkl")
-print("  - Performance plots: results/balanced_model_performance.png")
-print("  - Feature importance: results/balanced_feature_importance.csv")
+print("  - Performance plots: visualizations/traditional_ml/balanced_model_performance.png")
+print("  - Feature importance: visualizations/traditional_ml/balanced_feature_importance.csv")
 print("\nThe balanced dataset approach has significantly improved model performance!")

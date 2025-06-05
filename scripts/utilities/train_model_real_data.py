@@ -239,7 +239,7 @@ joblib.dump(
 )
 
 # Save feature importance
-importance_df.to_csv("results/feature_importance.csv", index=False)
+importance_df.to_csv("visualizations/traditional_ml/feature_importance.csv", index=False)
 
 # Create and save performance plots
 plt.figure(figsize=(15, 10))
@@ -288,8 +288,8 @@ plt.ylabel("True Label")
 plt.xlabel("Predicted Label")
 
 plt.tight_layout()
-plt.savefig("results/model_performance.png", dpi=300, bbox_inches="tight")
-print("   Saved performance plots to results/model_performance.png")
+plt.savefig("visualizations/traditional_ml/model_performance.png", dpi=300, bbox_inches="tight")
+print("   Saved performance plots to visualizations/traditional_ml/model_performance.png")
 
 print("\n" + "=" * 60)
 print("TRAINING COMPLETE!")
